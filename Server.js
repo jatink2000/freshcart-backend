@@ -56,6 +56,29 @@ app.post("/signup", async (req, res) => {
 
 
 
+// login ----------------------
+app.post("/login",async(req,res)=>{
+    let ouruser = req.body.logindata
+    let a = await Users.findOne({
+        email: ouruser.email,
+        password: ouruser.password
+    })
+
+    if(a){
+        res.json({
+            status:true,
+            logedin:a
+        })
+    }
+    else{
+        res.json({
+            status:false
+        })
+    }
+    
+})
+
+
 
 // port -------------------
 app.listen(8080, () => {
