@@ -33,22 +33,22 @@ mongoose.connect("mongodb://localhost:27017/freshcart").then(() => {
 app.post("/signup", async (req, res) => {
     let ouruser = req.body.signupdata
     let a = await Users.insertOne({
-        firstname:ouruser.firstname ,
+        firstname: ouruser.firstname,
         lastname: ouruser.lastname,
         email: ouruser.email,
         password: ouruser.password
     })
 
-    let result=await a.save()
+    let result = await a.save()
 
-    if(result){
+    if (result) {
         res.json({
-            status:true
+            status: true
         })
     }
-    else{
+    else {
         res.json({
-            status:false
+            status: false
         })
     }
 })
@@ -57,26 +57,47 @@ app.post("/signup", async (req, res) => {
 
 
 // login ----------------------
-app.post("/login",async(req,res)=>{
+app.post("/login", async (req, res) => {
     let ouruser = req.body.logindata
     let a = await Users.findOne({
         email: ouruser.email,
         password: ouruser.password
     })
 
-    if(a){
+    if (a) {
         res.json({
-            status:true,
-            logedin:a
+            status: true,
+            logedin: a
         })
     }
-    else{
+    else {
         res.json({
-            status:false
+            status: false
         })
     }
-    
+
 })
+
+
+// reset password ------------
+app.post("/resetpassword", async (req, res) => {
+    let ouruser = req.body.resetpassword
+    let a = await Users.findOneAndUpdate({ "email": ouruser.email }, { $set: { "password": ouruser.password } })
+
+    if (a) {
+        res.json({
+            status: true,
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
+
+})
+
+
 
 
 
