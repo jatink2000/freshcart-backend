@@ -17,6 +17,8 @@ app.use(cors())
 
 // model schema ------------------
 const Users = require("./model/Users")
+const Products = require("./model/Addproduct")
+
 
 
 
@@ -100,6 +102,39 @@ app.post("/resetpassword", async (req, res) => {
 
 
 
+
+
+
+// signup -------------------
+app.post("/addproduct", async (req, res) => {
+
+
+    let ourproduct = req.body.addproduct
+
+    let a = await Products.insertOne({
+        producttitle: ourproduct.producttitle,
+        productcategory: ourproduct.productcategory,
+        productweight: ourproduct.productweight,
+        productquantity: ourproduct.productquantity,
+        productimage: ourproduct.productimage,
+        productdescriptions: ourproduct.productdescriptions,
+        regularprice: ourproduct.regularprice,
+        saleprice: ourproduct.saleprice
+    })
+
+    let result = await a.save()
+
+    if (result) {
+        res.json({
+            status: true
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
+})
 
 // port -------------------
 app.listen(8080, () => {
