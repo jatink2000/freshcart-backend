@@ -105,7 +105,7 @@ app.post("/resetpassword", async (req, res) => {
 
 
 
-// signup -------------------
+// addproduct -------------------
 app.post("/addproduct", async (req, res) => {
 
 
@@ -135,6 +135,50 @@ app.post("/addproduct", async (req, res) => {
         })
     }
 })
+
+
+// deleteproduct -------------
+app.post("/deleteproduct", async (req, res) => {
+    let deleteourproduct = await Products.findOneAndDelete({ "_id": req.body._id })
+
+    if (deleteourproduct) {
+        res.json({
+            status: true
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
+
+})
+
+
+
+
+// products ------------------
+app.get("/products", async (req, res) => {
+    let allproduct = await Products.find({})
+
+
+    if (allproduct) {
+        res.json({
+            status: true,
+            ourproducts: allproduct
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
+
+})
+
+
+
+
 
 // port -------------------
 app.listen(8080, () => {
