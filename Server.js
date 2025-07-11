@@ -18,6 +18,8 @@ app.use(cors())
 // model schema ------------------
 const Users = require("./model/Users")
 const Products = require("./model/Addproduct")
+const wishlists = require("./model/wishlist")
+
 
 
 
@@ -177,6 +179,58 @@ app.get("/products", async (req, res) => {
 })
 
 
+
+
+
+
+
+// wishlist ----------
+app.post("/wishlist",async(req,res)=>{
+     let ourproduct = req.body.a
+
+    let a = await wishlists.insertOne({
+        producttitle: ourproduct.producttitle,
+        productcategory: ourproduct.productcategory,
+        productweight: ourproduct.productweight,
+        productquantity: ourproduct.productquantity,
+        productimage: ourproduct.productimage,
+        productdescriptions: ourproduct.productdescriptions,
+        regularprice: ourproduct.regularprice,
+        saleprice: ourproduct.saleprice
+    })
+
+    let result = await a.save()
+
+    if (result) {
+        res.json({
+            status: true
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
+})
+
+
+
+// wishlistsproduct-------------
+app.get("/wishlistsproduct",async(req,res)=>{
+     let a = await wishlists.find({})
+
+     if(a){
+        res.json({
+            status:true,
+            wishlistsproduct:a
+        })
+     }
+     else{
+         res.json({
+            status:false
+        })
+     }
+})
 
 
 
