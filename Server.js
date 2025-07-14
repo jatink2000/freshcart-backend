@@ -158,6 +158,37 @@ app.post("/deleteproduct", async (req, res) => {
 
 
 
+// editproduct-------------
+
+app.post("/editproduct",async(req,res)=>{
+    let ourproduct=req.body.edititem
+   let editourproduct = await Products.findOneAndUpdate({ "_id": ourproduct._id },{$set:{
+        producttitle: ourproduct.producttitle,
+        productcategory: ourproduct.productcategory,
+        productweight: ourproduct.productweight,
+        productquantity: ourproduct.productquantity,
+        productimage: ourproduct.productimage,
+        productdescriptions: ourproduct.productdescriptions,
+        regularprice: ourproduct.regularprice,
+        saleprice: ourproduct.saleprice
+   }})
+
+
+
+   if(editourproduct){
+    res.json({
+        status:true
+    })
+   }
+   else{
+    res.json({
+        status:false
+    })
+   }
+})
+
+
+
 
 // products ------------------
 app.get("/products", async (req, res) => {
@@ -175,7 +206,6 @@ app.get("/products", async (req, res) => {
             status: false
         })
     }
-
 })
 
 
