@@ -19,6 +19,8 @@ app.use(cors())
 const Users = require("./model/Users")
 const Products = require("./model/Addproduct")
 const wishlists = require("./model/wishlist")
+const Reviews = require("./model/Review")
+
 
 
 
@@ -160,31 +162,33 @@ app.post("/deleteproduct", async (req, res) => {
 
 // editproduct-------------
 
-app.post("/editproduct",async(req,res)=>{
-    let ourproduct=req.body.edititem
-   let editourproduct = await Products.findOneAndUpdate({ "_id": ourproduct._id },{$set:{
-        producttitle: ourproduct.producttitle,
-        productcategory: ourproduct.productcategory,
-        productweight: ourproduct.productweight,
-        productquantity: ourproduct.productquantity,
-        productimage: ourproduct.productimage,
-        productdescriptions: ourproduct.productdescriptions,
-        regularprice: ourproduct.regularprice,
-        saleprice: ourproduct.saleprice
-   }})
-
-
-
-   if(editourproduct){
-    res.json({
-        status:true
+app.post("/editproduct", async (req, res) => {
+    let ourproduct = req.body.edititem
+    let editourproduct = await Products.findOneAndUpdate({ "_id": ourproduct._id }, {
+        $set: {
+            producttitle: ourproduct.producttitle,
+            productcategory: ourproduct.productcategory,
+            productweight: ourproduct.productweight,
+            productquantity: ourproduct.productquantity,
+            productimage: ourproduct.productimage,
+            productdescriptions: ourproduct.productdescriptions,
+            regularprice: ourproduct.regularprice,
+            saleprice: ourproduct.saleprice
+        }
     })
-   }
-   else{
-    res.json({
-        status:false
-    })
-   }
+
+
+
+    if (editourproduct) {
+        res.json({
+            status: true
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
 })
 
 
@@ -215,8 +219,8 @@ app.get("/products", async (req, res) => {
 
 
 // wishlist ----------
-app.post("/wishlist",async(req,res)=>{
-     let ourproduct = req.body.a
+app.post("/wishlist", async (req, res) => {
+    let ourproduct = req.body.a
 
     let a = await wishlists.insertOne({
         producttitle: ourproduct.producttitle,
@@ -246,20 +250,68 @@ app.post("/wishlist",async(req,res)=>{
 
 
 // wishlistsproduct-------------
-app.get("/wishlistsproduct",async(req,res)=>{
-     let a = await wishlists.find({})
+app.get("/wishlistsproduct", async (req, res) => {
+    let a = await wishlists.find({})
 
-     if(a){
+    if (a) {
         res.json({
-            status:true,
-            wishlistsproduct:a
+            status: true,
+            wishlistsproduct: a
         })
-     }
-     else{
-         res.json({
-            status:false
+    }
+    else {
+        res.json({
+            status: false
         })
-     }
+    }
+})
+
+
+
+// productreview ----------------
+app.post("/productreview", async (req, res) => {
+    let a = await Reviews.insertOne({
+        productid: req.body.id,
+        name: req.body.review.fullname,
+        review: req.body.review.review
+    })
+
+    let result = await a.save()
+
+    if (result) {
+        res.json({
+            status: true
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
+
+
+
+})
+
+
+
+
+// review Get ---------------------
+app.get("/allreview", async (req, res) => {
+    let allreviews = await Reviews.find({})
+
+
+    if (allreviews) {
+        res.json({
+            status: true,
+            ourreview: allreviews
+        })
+    }
+    else {
+        res.json({
+            status: false
+        })
+    }
 })
 
 
